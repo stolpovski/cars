@@ -37,7 +37,7 @@ public class CarController : MonoBehaviour
 
     private void Awake()
     {
-        _spawn = GameObject.Find("Spawn").transform;
+        _spawn = GameObject.Find("Spawn")?.transform;
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
 
@@ -66,6 +66,7 @@ public class CarController : MonoBehaviour
 
     void Respawn(InputAction.CallbackContext ctx)
     {
+        if (!_spawn) return;
         _spawn.GetPositionAndRotation(out Vector3 position, out Quaternion rotation);
         transform.SetPositionAndRotation(position, rotation);
     }
