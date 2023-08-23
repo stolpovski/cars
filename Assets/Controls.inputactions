@@ -2,57 +2,18 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "Player",
-            "id": "bdaab5a6-f041-4535-b66d-499785fbc6ac",
+            "name": "Car",
+            "id": "c7d0ec42-20fc-42af-af26-93224b64897b",
             "actions": [
                 {
                     "name": "ToggleEngine",
                     "type": "Button",
-                    "id": "d27798c0-1896-4742-8f32-be8df6195f49",
+                    "id": "85309382-be6b-47e9-b3e4-efeb8912f64a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
-                {
-                    "name": "Restart",
-                    "type": "Button",
-                    "id": "9aed8a30-d864-4f8a-9cbe-77de6a6c951a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "64b64fb5-9fa3-47ac-b68a-8bb5ffafb196",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "ToggleEngine",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "257c2a0e-2ff6-4051-93fa-4af996823e2c",
-                    "path": "<Gamepad>/select",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Restart",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Car",
-            "id": "c7d0ec42-20fc-42af-af26-93224b64897b",
-            "actions": [
                 {
                     "name": "Throttle",
                     "type": "Value",
@@ -84,6 +45,15 @@
                     "name": "Horn",
                     "type": "Button",
                     "id": "fabc111d-77d2-4d2d-99a6-b32a3ff3ca20",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Respawn",
+                    "type": "Button",
+                    "id": "338d6e4d-698e-4d06-9352-5315cdadc20f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -126,6 +96,39 @@
                 },
                 {
                     "name": "1D Axis",
+                    "id": "bd0715b7-6746-45ed-ba68-a9ef8a5a17cc",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throttle",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "ff16d8df-460c-4522-8466-f91ff92a0c85",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Throttle",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "86330daf-2f0c-449b-a198-b3f0a3b29fa6",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Throttle",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
                     "id": "f45e0ac5-425a-48bd-9926-6dd6a2ad4ee4",
                     "path": "1DAxis",
                     "interactions": "",
@@ -158,12 +161,56 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "1D Axis",
+                    "id": "9c81ba8c-3273-4106-bd83-1d11b72ff81c",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steer",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "7748e5e3-3ac0-4716-b94b-98a31b7654cc",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Steer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "8f4d6087-60a4-49fd-a9db-9be8b65869c3",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Steer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "27b40286-d348-4260-8375-9a5163f24b80",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9cddb13-ea33-492b-a8a5-e741c01fc5f7",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
                     "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -178,6 +225,61 @@
                     "action": "Horn",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50f87899-c3e5-4ea1-bbcf-c81d4696a947",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Horn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77e82567-83dc-4e91-8b63-3fa6e8eb5298",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ToggleEngine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c240fb6c-acf2-4ee0-857b-c2dd00294a22",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ToggleEngine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c94c6571-c6c2-4c15-8f71-106a5b08c74a",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "abfcd17f-98d2-4557-9002-d49b771f6253",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
@@ -186,6 +288,11 @@
         {
             "name": "Gamepad",
             "bindingGroup": "Gamepad",
+            "devices": []
+        },
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
             "devices": []
         }
     ]

@@ -32,7 +32,7 @@ public class CarController : MonoBehaviour
     private float _throttle;
     private float _steer;
 
-    private bool _engineStarted;
+    private bool _engineRunning;
     Transform _spawn;
 
     private void Awake()
@@ -47,10 +47,10 @@ public class CarController : MonoBehaviour
         _horn = GameObject.Find("Horn").GetComponent<AudioSource>();
 
         _controls = new Controls();
-        _controls.Player.Enable();
+        _controls.Car.Enable();
 
-        _controls.Player.ToggleEngine.performed += ToggleEngine;
-        _controls.Player.Restart.performed += Restart;
+        _controls.Car.ToggleEngine.performed += ToggleEngine;
+        _controls.Car.Respawn.performed += Respawn;
 
         _controls.Car.Throttle.performed += context => _throttle = context.ReadValue<float>();
         _controls.Car.Throttle.canceled += context => _throttle = 0f;
@@ -64,7 +64,7 @@ public class CarController : MonoBehaviour
         _controls.Car.Horn.performed += Horn;
     }
 
-    void Restart(InputAction.CallbackContext ctx)
+    void Respawn(InputAction.CallbackContext ctx)
     {
         _spawn.GetPositionAndRotation(out Vector3 position, out Quaternion rotation);
         transform.SetPositionAndRotation(position, rotation);
@@ -77,25 +77,23 @@ public class CarController : MonoBehaviour
 
     private void ToggleEngine(InputAction.CallbackContext ctx)
     {
-        _engineStarted = !_engineStarted;
+        _engineRunning = !_engineRunning;
 
-        if (_engineStarted)
+        if (_engineRunning)
         {
             _engineStart.Play();
             _engine.Play();
-            _controls.Car.Enable();
         }
         else
         {
             _engine.Stop();
             _engineStop.Play();
-            _controls.Car.Disable();
         }
     }
 
     private void FixedUpdate()
     {
-        currentAcceleration = acceleration * _throttle;
+        currentAcceleration = _engineRunning ? acceleration * _throttle : 0f;
         currentTurnAngle = maxTurnAngle * _steer;
 
         rearLeft.motorTorque = currentAcceleration;
