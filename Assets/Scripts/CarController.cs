@@ -26,26 +26,31 @@ public class CarController : MonoBehaviour
     private AudioSource _engine;
     private AudioSource _engineStart;
     private AudioSource _engineStop;
+    AudioSource _horn;
 
     private Controls _controls;
     private float _throttle;
     private float _steer;
 
     private bool _engineStarted;
+    Transform _spawn;
 
     private void Awake()
     {
+        _spawn = GameObject.Find("Spawn").transform;
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
 
         _engine = GameObject.Find("Engine").GetComponent<AudioSource>();
         _engineStart = GameObject.Find("Start").GetComponent<AudioSource>();
         _engineStop = GameObject.Find("Stop").GetComponent<AudioSource>();
+        _horn = GameObject.Find("Horn").GetComponent<AudioSource>();
 
         _controls = new Controls();
-        _controls.Engine.Enable();
+        _controls.Player.Enable();
 
-        _controls.Engine.Trigger.performed += TriggerEngine;
+        _controls.Player.ToggleEngine.performed += ToggleEngine;
+        _controls.Player.Restart.performed += Restart;
 
         _controls.Car.Throttle.performed += context => _throttle = context.ReadValue<float>();
         _controls.Car.Throttle.canceled += context => _throttle = 0f;
@@ -55,9 +60,22 @@ public class CarController : MonoBehaviour
 
         _controls.Car.Brake.performed += context => currentBrakeForce = brakeForce;
         _controls.Car.Brake.canceled += context => currentBrakeForce = 0f;
+
+        _controls.Car.Horn.performed += Horn;
     }
 
-    private void TriggerEngine(InputAction.CallbackContext ctx)
+    void Restart(InputAction.CallbackContext ctx)
+    {
+        _spawn.GetPositionAndRotation(out Vector3 position, out Quaternion rotation);
+        transform.SetPositionAndRotation(position, rotation);
+    }
+
+    void Horn(InputAction.CallbackContext ctx)
+    {
+        _horn.Play();
+    }
+
+    private void ToggleEngine(InputAction.CallbackContext ctx)
     {
         _engineStarted = !_engineStarted;
 

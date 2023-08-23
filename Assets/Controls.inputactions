@@ -2,13 +2,22 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "Engine",
+            "name": "Player",
             "id": "bdaab5a6-f041-4535-b66d-499785fbc6ac",
             "actions": [
                 {
-                    "name": "Trigger",
+                    "name": "ToggleEngine",
                     "type": "Button",
                     "id": "d27798c0-1896-4742-8f32-be8df6195f49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "9aed8a30-d864-4f8a-9cbe-77de6a6c951a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -23,7 +32,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Trigger",
+                    "action": "ToggleEngine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "257c2a0e-2ff6-4051-93fa-4af996823e2c",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -55,6 +75,15 @@
                     "name": "Brake",
                     "type": "Button",
                     "id": "f4f4bbf9-6bc6-40d7-8abe-630d4deab6d9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Horn",
+                    "type": "Button",
+                    "id": "fabc111d-77d2-4d2d-99a6-b32a3ff3ca20",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -136,6 +165,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aa0f3d58-6bcf-49df-8471-3929863562a9",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Horn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

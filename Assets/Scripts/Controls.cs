@@ -24,13 +24,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     ""name"": ""Controls"",
     ""maps"": [
         {
-            ""name"": ""Engine"",
+            ""name"": ""Player"",
             ""id"": ""bdaab5a6-f041-4535-b66d-499785fbc6ac"",
             ""actions"": [
                 {
-                    ""name"": ""Trigger"",
+                    ""name"": ""ToggleEngine"",
                     ""type"": ""Button"",
                     ""id"": ""d27798c0-1896-4742-8f32-be8df6195f49"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""9aed8a30-d864-4f8a-9cbe-77de6a6c951a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -45,7 +54,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Trigger"",
+                    ""action"": ""ToggleEngine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""257c2a0e-2ff6-4051-93fa-4af996823e2c"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -77,6 +97,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Brake"",
                     ""type"": ""Button"",
                     ""id"": ""f4f4bbf9-6bc6-40d7-8abe-630d4deab6d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Horn"",
+                    ""type"": ""Button"",
+                    ""id"": ""fabc111d-77d2-4d2d-99a6-b32a3ff3ca20"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -160,6 +189,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa0f3d58-6bcf-49df-8471-3929863562a9"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Horn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -172,14 +212,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Engine
-        m_Engine = asset.FindActionMap("Engine", throwIfNotFound: true);
-        m_Engine_Trigger = m_Engine.FindAction("Trigger", throwIfNotFound: true);
+        // Player
+        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+        m_Player_ToggleEngine = m_Player.FindAction("ToggleEngine", throwIfNotFound: true);
+        m_Player_Restart = m_Player.FindAction("Restart", throwIfNotFound: true);
         // Car
         m_Car = asset.FindActionMap("Car", throwIfNotFound: true);
         m_Car_Throttle = m_Car.FindAction("Throttle", throwIfNotFound: true);
         m_Car_Steer = m_Car.FindAction("Steer", throwIfNotFound: true);
         m_Car_Brake = m_Car.FindAction("Brake", throwIfNotFound: true);
+        m_Car_Horn = m_Car.FindAction("Horn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,51 +280,59 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Engine
-    private readonly InputActionMap m_Engine;
-    private List<IEngineActions> m_EngineActionsCallbackInterfaces = new List<IEngineActions>();
-    private readonly InputAction m_Engine_Trigger;
-    public struct EngineActions
+    // Player
+    private readonly InputActionMap m_Player;
+    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
+    private readonly InputAction m_Player_ToggleEngine;
+    private readonly InputAction m_Player_Restart;
+    public struct PlayerActions
     {
         private @Controls m_Wrapper;
-        public EngineActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Trigger => m_Wrapper.m_Engine_Trigger;
-        public InputActionMap Get() { return m_Wrapper.m_Engine; }
+        public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleEngine => m_Wrapper.m_Player_ToggleEngine;
+        public InputAction @Restart => m_Wrapper.m_Player_Restart;
+        public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EngineActions set) { return set.Get(); }
-        public void AddCallbacks(IEngineActions instance)
+        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerActions instance)
         {
-            if (instance == null || m_Wrapper.m_EngineActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_EngineActionsCallbackInterfaces.Add(instance);
-            @Trigger.started += instance.OnTrigger;
-            @Trigger.performed += instance.OnTrigger;
-            @Trigger.canceled += instance.OnTrigger;
+            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
+            @ToggleEngine.started += instance.OnToggleEngine;
+            @ToggleEngine.performed += instance.OnToggleEngine;
+            @ToggleEngine.canceled += instance.OnToggleEngine;
+            @Restart.started += instance.OnRestart;
+            @Restart.performed += instance.OnRestart;
+            @Restart.canceled += instance.OnRestart;
         }
 
-        private void UnregisterCallbacks(IEngineActions instance)
+        private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @Trigger.started -= instance.OnTrigger;
-            @Trigger.performed -= instance.OnTrigger;
-            @Trigger.canceled -= instance.OnTrigger;
+            @ToggleEngine.started -= instance.OnToggleEngine;
+            @ToggleEngine.performed -= instance.OnToggleEngine;
+            @ToggleEngine.canceled -= instance.OnToggleEngine;
+            @Restart.started -= instance.OnRestart;
+            @Restart.performed -= instance.OnRestart;
+            @Restart.canceled -= instance.OnRestart;
         }
 
-        public void RemoveCallbacks(IEngineActions instance)
+        public void RemoveCallbacks(IPlayerActions instance)
         {
-            if (m_Wrapper.m_EngineActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IEngineActions instance)
+        public void SetCallbacks(IPlayerActions instance)
         {
-            foreach (var item in m_Wrapper.m_EngineActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_EngineActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public EngineActions @Engine => new EngineActions(this);
+    public PlayerActions @Player => new PlayerActions(this);
 
     // Car
     private readonly InputActionMap m_Car;
@@ -290,6 +340,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Car_Throttle;
     private readonly InputAction m_Car_Steer;
     private readonly InputAction m_Car_Brake;
+    private readonly InputAction m_Car_Horn;
     public struct CarActions
     {
         private @Controls m_Wrapper;
@@ -297,6 +348,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Throttle => m_Wrapper.m_Car_Throttle;
         public InputAction @Steer => m_Wrapper.m_Car_Steer;
         public InputAction @Brake => m_Wrapper.m_Car_Brake;
+        public InputAction @Horn => m_Wrapper.m_Car_Horn;
         public InputActionMap Get() { return m_Wrapper.m_Car; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -315,6 +367,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Brake.started += instance.OnBrake;
             @Brake.performed += instance.OnBrake;
             @Brake.canceled += instance.OnBrake;
+            @Horn.started += instance.OnHorn;
+            @Horn.performed += instance.OnHorn;
+            @Horn.canceled += instance.OnHorn;
         }
 
         private void UnregisterCallbacks(ICarActions instance)
@@ -328,6 +383,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Brake.started -= instance.OnBrake;
             @Brake.performed -= instance.OnBrake;
             @Brake.canceled -= instance.OnBrake;
+            @Horn.started -= instance.OnHorn;
+            @Horn.performed -= instance.OnHorn;
+            @Horn.canceled -= instance.OnHorn;
         }
 
         public void RemoveCallbacks(ICarActions instance)
@@ -354,14 +412,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
-    public interface IEngineActions
+    public interface IPlayerActions
     {
-        void OnTrigger(InputAction.CallbackContext context);
+        void OnToggleEngine(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
     }
     public interface ICarActions
     {
         void OnThrottle(InputAction.CallbackContext context);
         void OnSteer(InputAction.CallbackContext context);
         void OnBrake(InputAction.CallbackContext context);
+        void OnHorn(InputAction.CallbackContext context);
     }
 }
